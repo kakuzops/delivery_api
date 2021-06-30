@@ -5,7 +5,7 @@ defmodule Delivery.Delivery do
   @primary_key {:id, :binary_id, autogenerate: true}
 
 
-  schema "Delivery" do
+  schema "deliverys" do
     field :name, :string
     field :description, :string
     field :phone, :string
