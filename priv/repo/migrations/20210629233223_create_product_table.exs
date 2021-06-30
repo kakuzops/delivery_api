@@ -1,17 +1,17 @@
-defmodule Delivery.Repo.Migrations.CreateMenuTable do
+defmodule Delivery.Repo.Migrations.CreateProductTable do
   use Ecto.Migration
 
   def change do
 
-    create table (:menus) do
+    create table(:products) do
 
       add :name,        :string
       add :description, :string
       add :price,       :float
       add :quantity,    :integer
-      add :avaliable,   :bool
+      add :complement,  :string
+      add :options,     :string
 
-      timestamps()
     end
   end
 end

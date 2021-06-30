@@ -2,7 +2,8 @@ defmodule Delivery.Repo.Migrations.CreateDeliveryTable do
   use Ecto.Migration
 
   def change do
-    create table :delivery do
+    create table (:deliverys) do
+
       add :name, :string
       add :description, :string
       add :phone, :string
@@ -11,6 +12,6 @@ defmodule Delivery.Repo.Migrations.CreateDeliveryTable do
       timestamps()
     end
 
-    create unique_index(:delivery, [:email])
+    create unique_index(:deliverys, [:email])
   end
 end
