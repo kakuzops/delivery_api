@@ -6,8 +6,13 @@ defmodule Delivery.Repo.Migrations.CreateOrderTable do
     create table(:orders) do
       add :date, :date
       add :status, :integer
-      add :menu_id, references(:menus)
       add :product_id, references(:products)
+
+      timestamps()
     end
+  end
+
+  def down do
+    drop table("orders")
   end
 end

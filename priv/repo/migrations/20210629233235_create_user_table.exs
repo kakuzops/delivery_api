@@ -7,8 +7,14 @@ defmodule Delivery.Repo.Migrations.CreateUserTable do
       add :name,        :string
       add :address,     :string
       add :phone,       :string
-      add :string,      :string
+      add :email,       :string
 
+      timestamps()
     end
   end
+
+  def down do
+    drop table("users")
+  end
+
 end
