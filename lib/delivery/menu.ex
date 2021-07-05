@@ -3,7 +3,7 @@ defmodule Delivery.Menu do
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  schema "menu" do
+  schema "menus" do
     field :name, :string
     field :description, :string
     field :price, :float
