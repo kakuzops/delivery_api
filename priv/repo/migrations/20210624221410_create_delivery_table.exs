@@ -14,8 +14,4 @@ defmodule Delivery.Repo.Migrations.CreateDeliveryTable do
 
     create unique_index(:deliverys, [:email])
   end
-
-  def down do
-    drop table("deliverys")
-  end
 end
