@@ -11,8 +11,4 @@ defmodule Delivery.Repo.Migrations.CreateOrderTable do
       timestamps()
     end
   end
-
-  def down do
-    drop table("orders")
-  end
 end

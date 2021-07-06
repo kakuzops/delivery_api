@@ -11,6 +11,7 @@ defmodule Delivery.Repo.Migrations.CreateProductTable do
       add :complement,  :string
       add :options,     :string
 
+      timestamps()
     end
   end
 end

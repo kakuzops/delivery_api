@@ -12,9 +12,4 @@ defmodule Delivery.Repo.Migrations.CreateUserTable do
       timestamps()
     end
   end
-
-  def down do
-    drop table("users")
-  end
-
 end
