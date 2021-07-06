@@ -1,12 +1,20 @@
-on: push
+name: CI
+
+on:
+  push:
+
+env:
+  MIX_ENV: test
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
 
     services:
-      db:
-        image: postgres:9.6
+      postgres:
+        image: postgres:10.3
         ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
@@ -16,11 +24,44 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    strategy:
+      matrix:
+        elixir: [1.12.0]
+        otp: [24.0.1]
+
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
+      - uses: erlef/setup-elixir@v1
         with:
-          otp-version: '24.0.1'
-          elixir-version: '1.12.0-rc.1'
-      - run: mix deps.get
-      - run: mix test
+          elixir-version: ${{ matrix.elixir }} # Define the elixir version [required]
+          otp-version: ${{ matrix.otp }} # Define the OTP version [required]
+
+      - name: Retrieve Mix Dependencies Cache
+        uses: actions/cache@v1
+        id: mix-cache # id to use in retrieve action
+        with:
+          path: deps
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+      - name: List all env vars
+        run: env
+
+      - name: Install Mix Dependencies
+        #if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Compile our app
+        run: |
+          MIX_ENV=test mix compile --warnings-as-errors
+
+      - name: Run Test Suite
+        run: |
+          MIX_ENV=test mix coveralls.github --umbrella
+        env:
+          RABBITMQ_URL: "amqp://guest:guest@127.0.0.1:5672?heartbeat=30"
+
+      - name: Run Credo
+        run: MIX_ENV=test mix credo --strict
