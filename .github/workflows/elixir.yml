@@ -42,3 +42,14 @@ jobs:
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
+
+      - name: Compile our app
+        run: |
+          MIX_ENV=test mix compile --warnings-as-errors
+
+      - name: Run tets
+        run: mix deps.get
+        run: mix test
+
+      - name: Run Credo
+        run: MIX_ENV=test mix credo --strict
