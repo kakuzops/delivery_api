@@ -1,26 +1,37 @@
+name: Meu Workflow
+
 on: push
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    container:
+      image: elixir:1.12
+
     services:
-      db:
-        image: postgres:9.6
-        ports: ['5432:5432']
+      postgres:
+        image: postgres
+
+        ports:
+          - 5432:5432
+
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          POSTGRES_DB: delivery_dev
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
-        with:
-          otp-version: '24.0'
-          elixir-version: '1.12'
-      - run: mix deps.get
-      - run: mix test
+      - uses: actions/checkout@v1
+
+      - name: Formatar
+        run: mix format --check-formatted
+
+      - name: Instalar as dependências
+        run: mix deps.get
+
+      - name: Testar
+        run: mix test
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: $❴❴ job.services.postgres.ports[5432] ❵❵
