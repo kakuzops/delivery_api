@@ -21,6 +21,7 @@ defmodule Delivery.Order do
   def changeset(%{} = params) do
     %__MODULE__{}
     |> cast(params, @required)
+    |> validate_format(:email, ~r/@/)
     |> validate_required(@required)
   end
 end
