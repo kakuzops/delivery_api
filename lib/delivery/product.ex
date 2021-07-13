@@ -1,5 +1,13 @@
 defmodule Delivery.Product do
   use Ecto.Schema
+  import Ecto.Changeset
+
+  @required [
+    :name,
+    :description,
+    :price,
+    :quantity,
+  ]
 
   @primary_key {:id, :binary_id, autogenarate: true}
 
@@ -13,6 +21,13 @@ defmodule Delivery.Product do
 
     timestamps()
 
+  end
+
+
+  def changeset(%{} = params) do
+    %__MODULE__{}
+    |> cast(params, @required)
+    |> validate_required(@required)
   end
 
 end
