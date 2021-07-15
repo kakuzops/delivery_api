@@ -9,6 +9,7 @@ defmodule Delivery.Delivery do
 ]
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @derive {Jason.Encoder, only: [:id, :name, :description, :phone, :email]}
 
 
   schema "deliverys" do
